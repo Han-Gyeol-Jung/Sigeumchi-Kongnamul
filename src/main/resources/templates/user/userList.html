@@ -3,57 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <title>회원 리스트</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/default.css">
+    <link rel="stylesheet" href="../css/search.css">
 </head>
 <body>
-<!--헤더 삽입-->
-<div th:replace="fragments/bodyHeader :: bodyHeader" />
-<div >총 개수: <span th:text="${users.totalElements}"></span></div>
-<form class="form-inline d-flex justify-content-end" method="get" th:action="@{/users}">
-    <div class="col-auto">
-        <label for="searchText" class="sr-only">검색</label>
-        <input type="text" class="form-control" id="searchText" name="searchText" th:value="${param.searchText}">
-    </div>
-    <div class="col-auto">
-        <button type="submit" class="btn btn-light mb-3">검색</button>
-    </div>
-</form>
-<table class="type11">
-    <thead>
-    <tr>
-        <th>#</th>
-        <th>이름</th>
-        <th>이메일</th>
-        <th>비밀번호</th>
-        <th></th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="user : ${users}">
-        <td th:text="${user.id}"></td>
-        <td th:text="${user.userName}"></td>
-        <td th:text="${user.email}"></td>
-        <td th:text="${user.password}"></td>
-    </tr>
-    </tbody>
-</table>
-<nav aria-label="Page navigation example">
-    <ul class="pagination justify-content-center">
-        <li class="page-item" th:classappend="${1 == users.pageable.pageNumber+1} ? 'disabled' ">
-            <a class="page-link" href="#" th:href="@{/users(page=${users.pageable.pageNumber - 1}, searchText=${param.searchText})}" tabindex="-1" aria-disabled="true">Previous</a>
-        </li>
+<div class="content">
+    <!--헤더 삽입-->
+    <div th:replace="fragments/bodyHeader :: bodyHeader" />
 
-        <li class="page-item" th:classappend="${i == users.pageable.pageNumber+1} ? 'disabled' " th:each="i : ${#numbers.sequence(startPage, endPage)}">
-            <a class="page-link" href="#" th:href="@{/users(page=${i-1}, searchText=${param.searchText})}" th:text="${i}">1</a>
-        </li>
+    <div class="section">
+        <table class="type11" style="float:left;">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>이름</th>
+                <th>이메일</th>
+                <th>비밀번호</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user : ${users}">
+                <td th:text="${user.id}"></td>
+                <td th:text="${user.userName}"></td>
+                <td th:text="${user.email}"></td>
+                <td th:text="${user.password}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 
-        <li class="page-item" th:classappend="${users.totalPages == users.pageable.pageNumber+1} ? 'disabled' ">
-            <a class="page-link" href="#" th:href="@{/users(page=${users.pageable.pageNumber + 1}, searchText=${param.searchText})}">Next</a>
-        </li>
-    </ul>
-</nav>
+    <div class="aside" >
+        <div style="float:right;">
+            <div class="search" style="border:solid 1px; background: #20c997">
+                <div style="text-align:center">총 개수: <span th:text="${users.totalElements}"></span></div>
+                <form class="form-inline d-flex justify-content-end" method="get" th:action="@{/users}">
+                    <div class="col-auto">
+                        <label for="searchText" class="sr-only">검색</label>
+                        <input type="text" class="form-control" id="searchText" name="searchText" th:value="${param.searchText}">
+                    </div>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-light mb-3" style="margin-top: 17px">검색</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            <li class="page-item" th:classappend="${1 == users.pageable.pageNumber+1} ? 'disabled' ">
+                <a class="page-link" href="#" th:href="@{/users(page=${users.pageable.pageNumber - 1}, searchText=${param.searchText})}" tabindex="-1" aria-disabled="true">Previous</a>
+            </li>
+
+            <li class="page-item" th:classappend="${i == users.pageable.pageNumber+1} ? 'disabled' " th:each="i : ${#numbers.sequence(startPage, endPage)}">
+                <a class="page-link" href="#" th:href="@{/users(page=${i-1}, searchText=${param.searchText})}" th:text="${i}">1</a>
+            </li>
+
+            <li class="page-item" th:classappend="${users.totalPages == users.pageable.pageNumber+1} ? 'disabled' ">
+                <a class="page-link" href="#" th:href="@{/users(page=${users.pageable.pageNumber + 1}, searchText=${param.searchText})}">Next</a>
+            </li>
+        </ul>
+    </nav>
+</div>
 
 </body>
 </html>
